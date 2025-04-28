@@ -1,6 +1,7 @@
   // 輸入訂單數量
-const API_URL = 'https://script.google.com/macros/s/AKfycbzsTUoiYbxQl8waNIKTGLtf5jGTZHiyRYAiffbAeTPTHDP5uWHUKCr1Vwm2i_1CHPnE/exec'; // 填上你的網址
-  const API_KEY = 'LotusSeedsLOcalOrderFormKey2025!'; // 填上你的API KEY
+document.addEventListener('DOMContentLoaded', function () {
+  const API_URL = 'https://script.google.com/macros/s/AKfycbzsTUoiYbxQl8waNIKTGLtf5jGTZHiyRYAiffbAeTPTHDP5uWHUKCr1Vwm2i_1CHPnE/exec'; //我的API 網址
+  const API_KEY = 'LotusSeedsLOcalOrderFormKey2025!'; //我的API KEY
 
   document.getElementById('orderForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -23,7 +24,9 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbzsTUoiYbxQl8waNIKTGLtf
 
     fetch(API_URL, {
       method: 'POST',
-      contentType: 'application/json',
+      headers: {
+        'Content-Type': 'application/json' // 注意 header 要用 headers: {}
+      },
       body: JSON.stringify(data)
     })
     .then(response => response.json())
@@ -40,6 +43,8 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbzsTUoiYbxQl8waNIKTGLtf
       alert('發生錯誤，請稍後再試。');
     });
   });
+});
+
 
 
 
