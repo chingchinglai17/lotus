@@ -1,4 +1,4 @@
- document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
   const API_URL = 'https://script.google.com/macros/s/AKfycbzsTUoiYbxQl8waNIKTGLtf5jGTZHiyRYAiffbAeTPTHDP5uWHUKCr1Vwm2i_1CHPnE/exec';
   const API_KEY = 'LotusSeedsLOcalOrderFormKey2025!';
 
@@ -10,11 +10,36 @@
     product5Qty: 300  // 蓮子芯
   };
 
-  let currentTotal = 0; // 這個變數拿來記錄目前總金額
+  let currentTotal = 0;
+  let displayedTotal = 0;
+  let animationFrameId;
+
+  function calculateShipping(totalQty) {
+    if (totalQty >= 20) return 0;
+    if (totalQty >= 6) return 235;
+    if (totalQty >= 1) return 170;
+    return 0; // 沒有購買商品，運費0
+  }
+
+  function animateTotal() {
+    if (Math.abs(currentTotal - displayedTotal) < 1) {
+      displayedTotal = currentTotal;
+      renderTotal(displayedTotal);
+      return;
+    }
+    displayedTotal += (currentTotal - displayedTotal) * 0.2;
+    renderTotal(displayedTotal);
+    animationFrameId = requestAnimationFrame(animateTotal);
+  }
+
+  function renderTotal(total) {
+    document.getElementById('totalAmount').innerHTML = `<strong>總金額：${Math.round(total)} 元</strong>`;
+  }
 
   function updateSummary() {
     let summaryHTML = '';
     let total = 0;
+    let totalQty = 0;
 
     for (const [productId, price] of Object.entries(productPrices)) {
       const qty = Number(document.getElementById(productId).value) || 0;
@@ -22,18 +47,28 @@
         const subtotal = qty * price;
         summaryHTML += `<li>${document.getElementById(productId).placeholder}：${qty}包，共 ${subtotal} 元</li>`;
         total += subtotal;
+        totalQty += qty;
       }
     }
 
-    currentTotal = total; // 記錄目前總金額
+    const shippingFee = calculateShipping(totalQty);
+    if (totalQty > 0) {
+      summaryHTML += `<li>運費：${shippingFee} 元</li>`;
+      total += shippingFee;
+    }
+
+    currentTotal = total;
 
     if (summaryHTML === '') {
       document.getElementById('orderSummary').innerHTML = '<p>尚未選購商品</p>';
+      document.getElementById('totalAmount').innerHTML = '';
     } else {
       document.getElementById('orderSummary').innerHTML = `
         <ul>${summaryHTML}</ul>
-        <p><strong>總金額：${total} 元</strong></p>
+        <div id="totalAmount"></div>
       `;
+      cancelAnimationFrame(animationFrameId);
+      animateTotal();
     }
   }
 
@@ -46,7 +81,7 @@
 
     if (currentTotal === 0) {
       alert('請至少選購一樣商品再送出訂單喔！🙏');
-      return; // 中止送出
+      return;
     }
     
     const data = {
