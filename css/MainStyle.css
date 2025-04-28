@@ -10,9 +10,9 @@
 
     header img {
       width: 100%;
-      max-width: 600px;
+      max-width: 60px;
       display: block;
-      margin: 10px auto;
+      margin: 0 auto;
       animation: fadeIn 1s ease-in;
     }
 
