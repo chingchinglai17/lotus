@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const API_URL = 'https://script.google.com/macros/s/AKfycbzsTUoiYbxQl8waNIKTGLtf5jGTZHiyRYAiffbAeTPTHDP5uWHUKCr1Vwm2i_1CHPnE/exec';
+  const API_URL = 'https://script.google.com/macros/s/AKfycbzx_O7rSqtfF5Gb1lf93IG8oAwxJLgLkc1Mayl0ePWpCCt0ZSzBDVXJB5txmkpmvc_V/exec';
   const API_KEY = 'LotusSeedsLOcalOrderFormKey2025!';
 
   const productPrices = {
