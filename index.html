@@ -38,14 +38,14 @@
   </div>
 </section>
 
-<form id="orderForm">
-  <input type="text" id="fbName" placeholder="FB名稱" required>
-  <input type="text" id="lineName" placeholder="LINE名稱" required>
-  <input type="text" id="receiverName" placeholder="收件人姓名" required>
-  <input type="text" id="phone" placeholder="電話" required>
-  <input type="text" id="address" placeholder="地址" required>
-  <input type="text" id="shipping" placeholder="配送方式 (如：宅配/自取)" required>
-  <input type="text" id="notes" placeholder="備註 (可留空)">
+<form id="orderForm" autocomplete="off">
+  <input type="text" id="fbName" placeholder="您的FB名稱"  autocomplete="off">
+  <input type="text" id="lineName" placeholder="您的LINE名稱"  autocomplete="off">
+  <input type="text" id="receiverName" placeholder="收件人姓名"  autocomplete="off" required>
+  <input type="text" id="phone" placeholder="您的電話"  autocomplete="off" required>
+  <input type="text" id="address" placeholder="您的地址"  autocomplete="off" required>
+  <input type="text" id="shipping" placeholder="配送方式 (如：冷藏/冷凍)"  autocomplete="off">
+  <input type="text" id="notes" placeholder="備註 (可留空)" autocomplete="off">
   <button type="submit">送出訂單</button>
 </form>
 
