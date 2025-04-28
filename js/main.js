@@ -1,10 +1,53 @@
-  // 輸入訂單數量
-document.addEventListener('DOMContentLoaded', function () {
-  const API_URL = 'https://script.google.com/macros/s/AKfycbzsTUoiYbxQl8waNIKTGLtf5jGTZHiyRYAiffbAeTPTHDP5uWHUKCr1Vwm2i_1CHPnE/exec'; //我的API 網址
-  const API_KEY = 'LotusSeedsLOcalOrderFormKey2025!'; //我的API KEY
+ document.addEventListener('DOMContentLoaded', function () {
+  const API_URL = 'https://script.google.com/macros/s/AKfycbzsTUoiYbxQl8waNIKTGLtf5jGTZHiyRYAiffbAeTPTHDP5uWHUKCr1Vwm2i_1CHPnE/exec';
+  const API_KEY = 'LotusSeedsLOcalOrderFormKey2025!';
+
+  const productPrices = {
+    product1Qty: 450, // 去膜去芯蓮子
+    product2Qty: 400, // 含膜去芯蓮子
+    product3Qty: 350, // 含膜含芯蓮子
+    product4Qty: 250, // 蓮藕粉
+    product5Qty: 300  // 蓮子芯
+  };
+
+  let currentTotal = 0; // 這個變數拿來記錄目前總金額
+
+  function updateSummary() {
+    let summaryHTML = '';
+    let total = 0;
+
+    for (const [productId, price] of Object.entries(productPrices)) {
+      const qty = Number(document.getElementById(productId).value) || 0;
+      if (qty > 0) {
+        const subtotal = qty * price;
+        summaryHTML += `<li>${document.getElementById(productId).placeholder}：${qty}包，共 ${subtotal} 元</li>`;
+        total += subtotal;
+      }
+    }
+
+    currentTotal = total; // 記錄目前總金額
+
+    if (summaryHTML === '') {
+      document.getElementById('orderSummary').innerHTML = '<p>尚未選購商品</p>';
+    } else {
+      document.getElementById('orderSummary').innerHTML = `
+        <ul>${summaryHTML}</ul>
+        <p><strong>總金額：${total} 元</strong></p>
+      `;
+    }
+  }
+
+  document.querySelectorAll('input[type="number"]').forEach(input => {
+    input.addEventListener('input', updateSummary);
+  });
 
   document.getElementById('orderForm').addEventListener('submit', function(e) {
     e.preventDefault();
+
+    if (currentTotal === 0) {
+      alert('請至少選購一樣商品再送出訂單喔！🙏');
+      return; // 中止送出
+    }
     
     const data = {
       key: API_KEY,
@@ -25,15 +68,16 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch(API_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json' // 注意 header 要用 headers: {}
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
     })
     .then(response => response.json())
     .then(result => {
       if (result.success) {
-        alert('訂單送出成功！感謝您的訂購！');
+        alert('訂單送出成功！感謝您的訂購！🎉');
         document.getElementById('orderForm').reset();
+        updateSummary();
       } else {
         alert('訂單送出失敗：' + result.error);
       }
@@ -43,40 +87,6 @@ document.addEventListener('DOMContentLoaded', function () {
       alert('發生錯誤，請稍後再試。');
     });
   });
+
+  updateSummary();
 });
-
-
-
-
-//計算總經額
-function updateCartSummary() {
-  const cartItemsContainer = document.getElementById('cartItems');
-  const totalAmountElement = document.getElementById('totalAmount');
-  cartItemsContainer.innerHTML = ''; // 清空原本的內容
-
-  let totalAmount = 0;
-  const products = [
-    { id: 'product1Qty', name: '去膜去芯蓮子' },
-    { id: 'product2Qty', name: '含膜去芯蓮子' },
-    { id: 'product3Qty', name: '含膜含芯蓮子' },
-    { id: 'product4Qty', name: '蓮藕粉' },
-    { id: 'product5Qty', name: '蓮芯' }
-  ];
-
-  products.forEach(product => {
-    const qtyInput = document.getElementById(product.id);
-    const quantity = Number(qtyInput.value) || 0;
-    const price = Number(qtyInput.dataset.price) || 0;
-    if (quantity > 0) {
-      const subtotal = quantity * price;
-      totalAmount += subtotal;
-
-      // 建立每個商品的訂購行
-      const item = document.createElement('div');
-      item.textContent = `${product.name} x ${quantity} = ${subtotal} 元`;
-      cartItemsContainer.appendChild(item);
-    }
-  });
-
-  totalAmountElement.textContent = totalAmount.toLocaleString(); // 加上千分位
-}
