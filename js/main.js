@@ -4,10 +4,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const productPrices = {
     product1Qty: 450, // 去膜去芯蓮子
-    product2Qty: 400, // 含膜去芯蓮子
-    product3Qty: 350, // 含膜含芯蓮子
-    product4Qty: 250, // 蓮藕粉
-    product5Qty: 300  // 蓮子芯
+    product2Qty: 420, // 含膜去芯蓮子
+    product3Qty: 400, // 含膜含芯蓮子
+    product4Qty: 500, // 蓮藕粉
+    product5Qty: 0  // 蓮子芯
   };
 
   let currentTotal = 0;
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const qty = Number(document.getElementById(productId).value) || 0;
       if (qty > 0) {
         const subtotal = qty * price;
-        summaryHTML += `<li>${document.getElementById(productId).placeholder}：${qty}包，共 ${subtotal} 元</li>`;
+        summaryHTML += `<li>${document.getElementById(productId).placeholder}：${qty}斤(包)，共 ${subtotal} 元</li>`;
         total += subtotal;
         totalQty += qty;
       }
