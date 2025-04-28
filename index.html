@@ -82,49 +82,6 @@
   © 2025 黃家在地白河蓮子 All rights reserved.
 </footer>
 
-<script>
-  const API_URL = 'https://script.google.com/macros/s/AKfycbzsTUoiYbxQl8waNIKTGLtf5jGTZHiyRYAiffbAeTPTHDP5uWHUKCr1Vwm2i_1CHPnE/exec'; // 填上你的網址
-  const API_KEY = 'LotusSeedsLOcalOrderFormKey2025!'; // 填上你的API KEY
-
-  document.getElementById('orderForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const data = {
-      key: API_KEY,
-      fbName: document.getElementById('fbName').value,
-      lineName: document.getElementById('lineName').value,
-      receiverName: document.getElementById('receiverName').value,
-      phone: document.getElementById('phone').value,
-      address: document.getElementById('address').value,
-      shipping: document.getElementById('shipping').value,
-      notes: document.getElementById('notes').value,
-      product1Qty: Number(document.getElementById('product1Qty').value) || 0,
-      product2Qty: Number(document.getElementById('product2Qty').value) || 0,
-      product3Qty: Number(document.getElementById('product3Qty').value) || 0,
-      product4Qty: Number(document.getElementById('product4Qty').value) || 0,
-      product5Qty: Number(document.getElementById('product5Qty').value) || 0,
-    };
-
-    fetch(API_URL, {
-      method: 'POST',
-      contentType: 'application/json',
-      body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(result => {
-      if (result.success) {
-        alert('訂單送出成功！感謝您的訂購！');
-        document.getElementById('orderForm').reset();
-      } else {
-        alert('訂單送出失敗：' + result.error);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('發生錯誤，請稍後再試。');
-    });
-  });
-</script>
 
 </body>
 </html>
